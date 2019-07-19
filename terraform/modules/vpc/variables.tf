@@ -6,9 +6,9 @@ variable "deploy_availability_zones" {
   type = "list"
 
   default = [
-    "us-west-2a",
-    "us-west-2b",
-    "us-west-2c",
+    "us-east-2a",
+    "us-east-2b",
+    "us-east-2c",
   ]
 }
 
@@ -43,9 +43,9 @@ variable "default_vpc_cidrs" {
 }
 
 variable "default_vpc_id" {
-  default = "vpc-037950fc91f7f756a"
+  default = "vpc-e7d6338c"
 }
 
 variable "defaultRouteTables" {
-  default = "rtb-060d4f1c922549f8c"
+  default = "rtb-d510b2be"
 }
