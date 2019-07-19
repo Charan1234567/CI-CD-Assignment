@@ -19,7 +19,7 @@ resource "aws_instance" "app" {
   }
 
   tags {
-    Name = "${var.appName}-${var.environment}-${count.index + 1}"
+    "Name" = "${var.appName}-${var.environment}-${count.index + 1}"
   }
 }
 
