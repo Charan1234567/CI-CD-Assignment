@@ -18,7 +18,7 @@ resource "aws_instance" "app" {
     command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_user} --private-key ~/.ssh/ohioKey.pem -i '${self.private_ip},' '../../ansible/site.yml'"
   }
 
-  tags {
+  tags = {
     "Name" = "${var.appName}-${var.environment}-${count.index + 1}"
   }
 }
