@@ -1,7 +1,7 @@
 provider "aws" {
   region  = "${var.aws_region}"
   profile = "default"
-  version = "1.23.0"
+  version = "~> 2.1"
 }
 
 module "vpc" {
@@ -12,7 +12,7 @@ module "vpc" {
 }
 
 provider "null" {
-  version = "1.0"
+  version = "2.1"
 }
 
 data "aws_availability_zones" "available" {}
