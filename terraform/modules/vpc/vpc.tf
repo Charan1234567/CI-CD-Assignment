@@ -4,7 +4,7 @@ resource "aws_vpc" "infra" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags {
+  tags = {
     Name = "${var.environment} VPC"
   }
 }
@@ -17,7 +17,7 @@ resource "aws_subnet" "PublicSubnet" {
   cidr_block              = "${var.vpc_net_block}${var.public_subnet_cidrs[count.index]}"
   map_public_ip_on_launch = false
 
-  tags {
+  tags = {
     Name = "${var.environment} Public Subnet ${count.index+1}"
   }
 }
@@ -29,7 +29,7 @@ output "PublicSubnetIDs" {
 resource "aws_internet_gateway" "IGW" {
   vpc_id = "${aws_vpc.infra.id}"
 
-  tags {
+  tags = {
     Name = "${var.environment} IGW"
   }
 }
@@ -49,7 +49,7 @@ resource "aws_route_table" "PublicRouteTable" {
 }
 
 resource "aws_route_table_association" "PublicRouteTableAssoc" {
-  count          = "${aws_subnet.PublicSubnet.count}"
+  count          = "${length(aws_subnet.PublicSubnet)}"
   subnet_id      = "${element(aws_subnet.PublicSubnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.PublicRouteTable.id}"
 }
@@ -62,7 +62,7 @@ resource "aws_subnet" "PrivateSubnet" {
   cidr_block              = "${var.vpc_net_block}${var.private_subnet_cidrs[count.index]}"
   map_public_ip_on_launch = false
 
-  tags {
+  tags = {
     Name = "${var.environment} Private Subnet ${count.index+1}"
   }
 }
@@ -72,7 +72,7 @@ output "PrivateSubnetIDs" {
 }
 
 resource "aws_eip" "NGW_EIP" {
-  tags {
+  tags = {
     Name = "${var.environment} NGW EIP"
   }
 }
@@ -81,7 +81,7 @@ resource "aws_nat_gateway" "NGW" {
   subnet_id     = "${element(aws_subnet.PublicSubnet.*.id, var.nat_subnet_number)}"
   allocation_id = "${aws_eip.NGW_EIP.id}"
 
-  tags {
+  tags = {
     Name = "${var.environment} NGW"
   }
 }
@@ -101,7 +101,7 @@ resource "aws_route_table" "PrivateRouteTable" {
 }
 
 resource "aws_route_table_association" "PrivateRouteTableAssoc" {
-  count          = "${aws_subnet.PrivateSubnet.count}"
+  count          = "${length(aws_subnet.PrivateSubnet)}"
   subnet_id      = "${element(aws_subnet.PrivateSubnet.*.id, count.index)}"
   route_table_id = "${aws_route_table.PrivateRouteTable.id}"
 }
